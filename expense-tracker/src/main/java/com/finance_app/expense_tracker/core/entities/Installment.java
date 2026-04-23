@@ -28,7 +28,8 @@ public class Installment {
     private Instant updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "transaction_id")
+    @JoinColumn(name = "transaction_id",
+                foreignKey = @ForeignKey(name = "fk_installment_transaction"))
     private Transaction transaction;
 
     // TODO: method generate next installment (batch) - validate if next isn't generated yet, if there is nothing manually registered

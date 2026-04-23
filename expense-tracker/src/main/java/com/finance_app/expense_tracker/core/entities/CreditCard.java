@@ -26,7 +26,8 @@ public class CreditCard {
     private Boolean isInternational;
 
     @ManyToOne
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "account_id",
+                foreignKey = @ForeignKey(name = "fk_credit_card_account"))
     private Account account; // pode ser nulo, ser for fintech/empresa só de cartão, mas então precisa vincular com usuário
     @OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
     private List<CreditCardBill> bills;

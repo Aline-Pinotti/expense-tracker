@@ -20,7 +20,8 @@ public class Notification {
     private Instant readAt;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id",
+                foreignKey = @ForeignKey(name = "fk_notification_user"))
     private User user;
    //  private Transaction transaction;
    //  private Installment installment;

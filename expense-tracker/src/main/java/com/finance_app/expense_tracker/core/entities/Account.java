@@ -25,10 +25,12 @@ public class Account {
 
     //TODO: conta conjunta
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id",
+            foreignKey = @ForeignKey(name = "fk_account_user"))
     private User user;
     @ManyToOne
-    @JoinColumn(name = "bank_id")
+    @JoinColumn(name = "bank_id",
+            foreignKey = @ForeignKey(name = "fk_account_bank"))
     private Bank bank;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")

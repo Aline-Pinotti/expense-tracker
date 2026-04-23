@@ -23,10 +23,12 @@ public class CreditCardBill {
     private BigDecimal amount;
     private LocalDate paidDate;
     private BigDecimal amountPayed; // para pagamentos parciais
+    @Enumerated(EnumType.STRING)
     private CreditCardBillStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "credit_card_id")
+    @JoinColumn(name = "credit_card_id",
+                foreignKey = @ForeignKey(name = "fk_credit_card_bill_credit_card"))
     private CreditCard card;
     @OneToMany(mappedBy = "billing", cascade = CascadeType.ALL)
     private List<Transaction> transactions = new ArrayList<>();

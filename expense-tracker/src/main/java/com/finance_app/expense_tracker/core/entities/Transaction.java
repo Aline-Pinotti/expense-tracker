@@ -38,7 +38,14 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     private TransactionCategory mainCategory;
 
-    @ElementCollection
+    @ElementCollection(targetClass = TransactionCategory.class)
+    @CollectionTable(
+            name = "tb_transaction_sub_category",
+            joinColumns = @JoinColumn(
+                    name = "transaction_id",
+                    foreignKey = @ForeignKey(name = "fk_transaction_sub_category_transaction")
+            )
+    )
     @Enumerated(EnumType.STRING)
     private Set<TransactionCategory> subCategories = new HashSet<>();
 
@@ -51,14 +58,18 @@ public class Transaction {
     private Instant updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id",
+                nullable = false,
+                foreignKey = @ForeignKey(name = "fk_transaction_user"))
     private User user;
     @ManyToOne
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "account_id",
+                foreignKey = @ForeignKey(name = "fk_transaction_account"))
     private Account account; // ou null se for cartão
     //private CreditCard creditCard; // quando for compra no cartão, vai estar vinculada através da CreditCardBill
     @ManyToOne
-    @JoinColumn(name = "billing_id")
+    @JoinColumn(name = "billing_id",
+            foreignKey = @ForeignKey(name = "fk_transaction_billing"))
     private CreditCardBill billing; // If credit card
 
     public Transaction() {
