@@ -1,22 +1,33 @@
 package com.finance_app.expense_tracker.core.entities;
 
+import jakarta.persistence.*;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
+@Entity
+@Table(name = "tb_notification")
 public class Notification {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String subject;
+    @Column(columnDefinition = "TEXT")
     private String message;
     private LocalDateTime dateTime;
     private Instant readAt;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
-  //  private Transaction transaction;
-  //  private Installment installment;
+   //  private Transaction transaction;
+   //  private Installment installment;
 
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createdAt;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updatedAt;
 
     public Notification() {

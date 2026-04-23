@@ -1,21 +1,33 @@
 package com.finance_app.expense_tracker.core.entities;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import jakarta.persistence.*;
 
+import java.time.Instant;
+import java.util.*;
+
+@Entity
+@Table(name = "tb_user")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String username;
+    @Column(unique = true)
     private String email;
     private String password;
 
-    private List<Role> roles = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "tb_user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Notification> notifications = new ArrayList<>();
 
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createdAt;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updatedAt;
 
     public User() {
@@ -62,12 +74,8 @@ public class User {
         this.password = password;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
     }
 
     public List<Notification> getNotifications() {

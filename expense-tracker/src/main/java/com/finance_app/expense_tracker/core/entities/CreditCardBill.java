@@ -1,6 +1,7 @@
 package com.finance_app.expense_tracker.core.entities;
 
 import com.finance_app.expense_tracker.core.enums.CreditCardBillStatus;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -10,8 +11,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+@Entity
+@Table(name = "tb_credit_card_bill")
 public class CreditCardBill {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private LocalDate dueDate;
     private LocalDate closingDate;
@@ -20,10 +25,15 @@ public class CreditCardBill {
     private BigDecimal amountPayed; // para pagamentos parciais
     private CreditCardBillStatus status;
 
+    @ManyToOne
+    @JoinColumn(name = "credit_card_id")
     private CreditCard card;
+    @OneToMany(mappedBy = "billing", cascade = CascadeType.ALL)
     private List<Transaction> transactions = new ArrayList<>();
 
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createdAt;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updatedAt;
 
 

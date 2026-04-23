@@ -3,17 +3,23 @@ package com.finance_app.expense_tracker.core.entities;
 import com.finance_app.expense_tracker.core.enums.TransactionCategory;
 import com.finance_app.expense_tracker.core.enums.TransactionPaymentMethod;
 import com.finance_app.expense_tracker.core.enums.TransactionType;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;
 
+@Entity
+@Table(name = "tb_transaction")
 public class Transaction {
 
     //TODO auditory class for the imported transactions when suffer updates
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private BigDecimal amount;
     private LocalDate date;
@@ -24,21 +30,35 @@ public class Transaction {
     private String inOut;
     private Integer numberOfInstallments; ;//(so batch will know if it should generate next installment)
 
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
     private List<Installment> installments = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
     private TransactionType type;
+    @Enumerated(EnumType.STRING)
     private TransactionCategory mainCategory;
 
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
     private Set<TransactionCategory> subCategories = new HashSet<>();
 
+    @Enumerated(EnumType.STRING)
     private TransactionPaymentMethod paymentMethod;
 
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createdAt;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updatedAt;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
+    @ManyToOne
+    @JoinColumn(name = "account_id")
     private Account account; // ou null se for cartão
     //private CreditCard creditCard; // quando for compra no cartão, vai estar vinculada através da CreditCardBill
+    @ManyToOne
+    @JoinColumn(name = "billing_id")
     private CreditCardBill billing; // If credit card
 
     public Transaction() {

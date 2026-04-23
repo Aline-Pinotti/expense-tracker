@@ -1,16 +1,25 @@
 package com.finance_app.expense_tracker.core.entities;
 
+import jakarta.persistence.*;
+
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
+@Entity
+@Table(name = "tb_bank")
 public class Bank {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
     private Integer number; // Banco do Brasil = 001
+    @Column(columnDefinition = "TEXT")
     private String colorLabel;
 
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createdAt;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updatedAt;
 
     public Bank() {

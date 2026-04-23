@@ -1,26 +1,39 @@
 package com.finance_app.expense_tracker.core.entities;
 
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
+@Entity
+@Table(name = "tb_account")
 public class Account {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
     private String agencyNo;
     private String code;
     private BigDecimal balance;
+    @Column(name = "account_limit")
     private BigDecimal limit;
     private BigDecimal specialLimit; //cheque especial
     private BigDecimal limitBudget; // app resource, to control limit usage
     private BigDecimal cash;
 
-    private User user;
     //TODO: conta conjunta
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "bank_id")
     private Bank bank;
 
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createdAt;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updatedAt;
 
     // TODO: getAvailableLimit(), getAvailableBalance() // TODO: Limit - Balance.. debits - credits

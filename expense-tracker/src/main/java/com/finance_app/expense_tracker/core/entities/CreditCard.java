@@ -1,5 +1,7 @@
 package com.finance_app.expense_tracker.core.entities;
 
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.YearMonth;
@@ -7,20 +9,31 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+@Entity
+@Table(name = "tb_credit_card")
 public class CreditCard {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    @Column(columnDefinition = "TEXT")
     private String name;
     private Integer number; // four last number for better identification, or complete if wanted, but completely optional
+    @Column(name = "card_limit")
     private BigDecimal limit;
     private int closingDay;
     private int dueDay;
     private YearMonth expirationDate;
     private Boolean isInternational;
 
+    @ManyToOne
+    @JoinColumn(name = "account_id")
     private Account account; // pode ser nulo, ser for fintech/empresa só de cartão, mas então precisa vincular com usuário
+    @OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
     private List<CreditCardBill> bills;
 
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createdAt;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updatedAt;
 
     //TODO: getAvailableLimit()

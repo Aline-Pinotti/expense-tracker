@@ -1,6 +1,6 @@
 package com.finance_app.expense_tracker.core.entities;
 
-import org.springframework.cglib.core.Local;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -8,18 +8,27 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 
+@Entity
+@Table(name = "tb_installment")
 public class Installment {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private BigDecimal amount;
     private LocalDate paidDay;
     private Integer number;
     private LocalDate dueDate; //if credit-card, it's about the bill
 
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createdAt;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updatedAt;
 
+    @ManyToOne
+    @JoinColumn(name = "transaction_id")
     private Transaction transaction;
 
     // TODO: method generate next installment (batch) - validate if next isn't generated yet, if there is nothing manually registered
