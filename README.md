@@ -192,7 +192,7 @@ classDiagram
     CreditCard "0..*" -- "0..1" Account
 
     Account "*" -- "1" Bank
-    User "1" -- "*" Transaction
+    User "1" -- "*" Transaction: transactions
 ```
 
 ## Entidades
