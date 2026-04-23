@@ -1,6 +1,8 @@
 package com.finance_app.expense_tracker.core.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -17,9 +19,9 @@ public class Bank {
     @Column(columnDefinition = "TEXT")
     private String colorLabel;
 
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @CreationTimestamp
     private Instant createdAt;
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @UpdateTimestamp
     private Instant updatedAt;
 
     public Bank() {
