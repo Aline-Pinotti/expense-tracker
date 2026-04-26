@@ -32,10 +32,7 @@ public class BankService {
 
     @Transactional(readOnly = true)
     public Page<BankDTO> findAllPaged(Pageable pageable) {
-        //repository retorna número como integer
-        //Bank entity = new Bank();
-        //converter para string + máscara antes de devolver
-        return repository.findAll(pageable).map(BankDTO::new); //como editar?
+        return repository.findAll(pageable).map(BankDTO::new);
     }
 
     @Transactional
@@ -68,6 +65,7 @@ public class BankService {
         }
     }
 
+    @Transactional
     public void delete(UUID id) {
         try {
             repository.deleteById(id);
