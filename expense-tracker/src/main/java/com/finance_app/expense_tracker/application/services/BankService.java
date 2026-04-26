@@ -37,28 +37,13 @@ public class BankService {
 
     @Transactional
     public BankDTO insert(BankDTO dto) {
-        Bank entity = new Bank();
-
-        entity.setName(dto.getName());
-        entity.setNumber(Integer.valueOf(dto.getNumber()));
-        entity.setColorLabel(dto.getColorLabel());
-        entity.setCreatedAt(java.time.Instant.now());
-        entity.setUpdatedAt(entity.getCreatedAt());
-        entity = repository.save(entity);
-
-        return new BankDTO(entity);
+        return new BankDTO(saveEntity(null, dto));
     }
 
     @Transactional
     public BankDTO update(UUID id, BankDTO dto) {
         try {
-            Bank entity = repository.getReferenceById(id);
-            entity.setName(dto.getName());
-            entity.setNumber(Integer.valueOf(dto.getNumber()));
-            entity.setColorLabel(dto.getColorLabel());
-            entity.setUpdatedAt(java.time.Instant.now());
-            entity = repository.save(entity);
-            return new BankDTO(entity);
+            return new BankDTO(saveEntity(id, dto));
         }
         catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found " + id);
@@ -76,5 +61,14 @@ public class BankService {
         catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Integrity violation");
         }
+    }
+
+    private Bank saveEntity(UUID id, BankDTO dto) {
+        Bank entity = new Bank();
+        if(id != null) entity = repository.getReferenceById(id);
+        entity.setName(dto.getName());
+        entity.setNumber(Integer.valueOf(dto.getNumber()));
+        entity.setColorLabel(dto.getColorLabel());
+        return repository.save(entity);
     }
 }
