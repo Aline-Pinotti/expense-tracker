@@ -1,6 +1,8 @@
 package com.finance_app.expense_tracker.core.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -22,9 +24,9 @@ public class Installment {
     private Integer number;
     private LocalDate dueDate; //if credit-card, it's about the bill
 
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @CreationTimestamp
     private Instant createdAt;
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @UpdateTimestamp
     private Instant updatedAt;
 
     @ManyToOne

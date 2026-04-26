@@ -1,6 +1,8 @@
 package com.finance_app.expense_tracker.core.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -32,9 +34,9 @@ public class CreditCard {
     @OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
     private List<CreditCardBill> bills;
 
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @CreationTimestamp
     private Instant createdAt;
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @UpdateTimestamp
     private Instant updatedAt;
 
     //TODO: getAvailableLimit()

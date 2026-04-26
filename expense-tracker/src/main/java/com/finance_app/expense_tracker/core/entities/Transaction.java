@@ -4,6 +4,8 @@ import com.finance_app.expense_tracker.core.enums.TransactionCategory;
 import com.finance_app.expense_tracker.core.enums.TransactionPaymentMethod;
 import com.finance_app.expense_tracker.core.enums.TransactionType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -52,9 +54,9 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     private TransactionPaymentMethod paymentMethod;
 
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @CreationTimestamp
     private Instant createdAt;
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @UpdateTimestamp
     private Instant updatedAt;
 
     @ManyToOne
