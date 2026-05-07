@@ -30,11 +30,9 @@ public class RoleService {
     }
 
     @Transactional(readOnly = true)
-    public List<RoleDTO> findByAuthority(String authority) {
-        return repository.findByAuthorityLike(authority).stream()
-                .map(RoleDTO::new)
-                .toList();
-    } // TODO: Paged?
+    public Page<RoleDTO> findByAuthority(String authority, Pageable pageable) {
+        return repository.findByAuthorityContaining(authority, pageable).map(RoleDTO::new);
+    }
 
     @Transactional(readOnly = true)
     public Page<RoleDTO> findAllPaged(Pageable pageable) {
