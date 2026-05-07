@@ -49,6 +49,17 @@ public class CreditCardBill {
     public CreditCardBill() {
     }
 
+    public CreditCardBill(UUID id, LocalDate dueDate, LocalDate closingDate, BigDecimal amount, LocalDate paidDate, BigDecimal amountPayed, CreditCardBillStatus status, CreditCard card) {
+        this.id = id;
+        this.dueDate = dueDate;
+        this.closingDate = closingDate;
+        this.amount = amount;
+        this.paidDate = paidDate;
+        this.amountPayed = amountPayed;
+        this.status = status;
+        this.card = card;
+    }
+
     public CreditCardBill(UUID id, LocalDate dueDate, LocalDate closingDate, BigDecimal amount, LocalDate paidDate, BigDecimal amountPayed, CreditCardBillStatus status, CreditCard card, Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.dueDate = dueDate;

@@ -24,7 +24,10 @@ public class Account {
     private BigDecimal specialLimit; //cheque especial
     private BigDecimal limitBudget; // app resource, to control limit usage
     private BigDecimal cash;
-
+    @CreationTimestamp
+    private Instant createdAt;
+    @UpdateTimestamp
+    private Instant updatedAt;
     //TODO: conta conjunta
     @ManyToOne
     @JoinColumn(name = "user_id",
@@ -35,17 +38,14 @@ public class Account {
             foreignKey = @ForeignKey(name = "fk_account_bank"))
     private Bank bank;
 
-    @CreationTimestamp
-    private Instant createdAt;
-    @UpdateTimestamp
-    private Instant updatedAt;
+
 
     // TODO: getAvailableLimit(), getAvailableBalance() // TODO: Limit - Balance.. debits - credits
 
     public Account() {
     }
 
-    public Account(UUID id, String name, String agencyNo, String code, Bank bank, BigDecimal balance, BigDecimal limit, BigDecimal specialLimit, BigDecimal limitBudget, BigDecimal cash, User user, Instant createdAt, Instant updatedAt) {
+    public Account(UUID id, String name, String agencyNo, String code, BigDecimal balance, BigDecimal limit, BigDecimal specialLimit, BigDecimal limitBudget, BigDecimal cash, Bank bank, User user) {
         this.id = id;
         this.name = name;
         this.agencyNo = agencyNo;
@@ -57,6 +57,20 @@ public class Account {
         this.limitBudget = limitBudget;
         this.cash = cash;
         this.user = user;
+    }
+
+    public Account(UUID id, String name, String agencyNo, String code, BigDecimal balance, BigDecimal limit, BigDecimal specialLimit, BigDecimal limitBudget, BigDecimal cash, User user, Bank bank, Instant createdAt, Instant updatedAt) {
+        this.id = id;
+        this.name = name;
+        this.agencyNo = agencyNo;
+        this.code = code;
+        this.balance = balance;
+        this.limit = limit;
+        this.specialLimit = specialLimit;
+        this.limitBudget = limitBudget;
+        this.cash = cash;
+        this.user = user;
+        this.bank = bank;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }

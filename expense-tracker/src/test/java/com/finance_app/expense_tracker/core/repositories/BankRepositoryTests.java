@@ -33,8 +33,8 @@ public class BankRepositoryTests {
         Optional<Bank> result = repository.findById(bank.getId());
 
         Assertions.assertNotNull(bank.getId());
-		Assertions.assertTrue(result.isPresent());
-		Assertions.assertSame(result.get(), bank);
+        Assertions.assertTrue(result.isPresent());
+        Assertions.assertSame(result.get(), bank);
 
     }
 

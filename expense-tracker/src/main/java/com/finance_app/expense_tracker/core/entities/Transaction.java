@@ -77,6 +77,24 @@ public class Transaction {
     public Transaction() {
     }
 
+    public Transaction(UUID id, String description, BigDecimal amount, LocalDate date, Boolean isFixed, LocalDate dueDate, LocalDate paidDate, String inOut, Integer numberOfInstallments, TransactionType type, TransactionCategory mainCategory, TransactionPaymentMethod paymentMethod, User user, Account account, CreditCardBill billing) {
+        this.id = id;
+        this.description = description;
+        this.amount = amount;
+        this.date = date;
+        this.isFixed = isFixed;
+        this.dueDate = dueDate;
+        this.paidDate = paidDate;
+        this.inOut = inOut;
+        this.numberOfInstallments = numberOfInstallments;
+        this.type = type;
+        this.mainCategory = mainCategory;
+        this.paymentMethod = paymentMethod;
+        this.user = user;
+        this.account = account;
+        this.billing = billing;
+    }
+
     public Transaction(UUID id, String description, BigDecimal amount, LocalDate date, Boolean isFixed, LocalDate dueDate, LocalDate paidDate, String inOut, Integer numberOfInstallments, TransactionType type, TransactionCategory mainCategory, TransactionPaymentMethod paymentMethod, Instant createdAt, Instant updatedAt, User user, Account account, CreditCardBill billing) {
         this.id = id;
         this.description = description;

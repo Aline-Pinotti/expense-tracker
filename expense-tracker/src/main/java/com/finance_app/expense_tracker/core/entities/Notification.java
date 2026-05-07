@@ -36,6 +36,14 @@ public class Notification {
     public Notification() {
     }
 
+    public Notification(UUID id, String subject, String message, LocalDateTime dateTime, User user) {
+        this.id = id;
+        this.subject = subject;
+        this.message = message;
+        this.dateTime = dateTime;
+        this.user = user;
+    }
+
     public Notification(UUID id, String subject, String message, LocalDateTime dateTime, Instant readAt, User user, Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.subject = subject;

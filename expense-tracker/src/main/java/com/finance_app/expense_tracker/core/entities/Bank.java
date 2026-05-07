@@ -27,6 +27,15 @@ public class Bank {
     public Bank() {
     }
 
+    public Bank(UUID id, String name, Integer number, String colorLabel) {
+        this.id = id;
+        this.name = name;
+        this.number = number;
+        this.colorLabel = colorLabel;
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
+    }
+
     public Bank(UUID id, String name, Integer number, String colorLabel, Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.name = name;

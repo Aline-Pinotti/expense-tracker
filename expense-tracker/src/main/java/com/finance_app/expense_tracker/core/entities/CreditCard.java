@@ -20,13 +20,16 @@ public class CreditCard {
     @Column(columnDefinition = "TEXT")
     private String name;
     private Integer number; // four last number for better identification, or complete if wanted, but completely optional
-    @Column(name = "card_limit")
+    @Column(name = "credit_card_limit")
     private BigDecimal limit;
     private int closingDay;
     private int dueDay;
     private YearMonth expirationDate;
     private Boolean isInternational;
-
+    @CreationTimestamp
+    private Instant createdAt;
+    @UpdateTimestamp
+    private Instant updatedAt;
     @ManyToOne
     @JoinColumn(name = "account_id",
                 foreignKey = @ForeignKey(name = "fk_credit_card_account"))
@@ -34,14 +37,23 @@ public class CreditCard {
     @OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
     private List<CreditCardBill> bills;
 
-    @CreationTimestamp
-    private Instant createdAt;
-    @UpdateTimestamp
-    private Instant updatedAt;
+
 
     //TODO: getAvailableLimit()
 
     public CreditCard() {
+    }
+
+    public CreditCard(UUID id, String name, Integer number, BigDecimal limit, int closingDay, int dueDay, YearMonth expirationDate, Boolean isInternational, Account account) {
+        this.id = id;
+        this.name = name;
+        this.number = number;
+        this.limit = limit;
+        this.closingDay = closingDay;
+        this.dueDay = dueDay;
+        this.expirationDate = expirationDate;
+        this.account = account;
+        this.isInternational = isInternational;
     }
 
     public CreditCard(UUID id, String name, Integer number, BigDecimal limit, int closingDay, int dueDay, YearMonth expirationDate, Account account, Boolean isInternational, Instant createdAt, Instant updatedAt) {

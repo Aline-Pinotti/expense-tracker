@@ -34,6 +34,24 @@ public class User {
 
     public User() {
     }
+    public User(UUID id, String username, String email, String password) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
+    }
+
+    public User(UUID id, String username, String email, String password, List<Role> roles) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
+        this.roles.addAll(roles);
+    }
 
     public User(UUID id, String username, String email, String password, Instant createdAt, Instant updatedAt) {
         this.id = id;

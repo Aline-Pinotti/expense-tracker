@@ -77,8 +77,8 @@ public class Factory {
     public static CreditCardBill createCreditCardBill() {//TODO: expired, closed etc
         CreditCardBill bill = new CreditCardBill();
         bill.setCard(createCreditCard());
-        bill.setDueDate(LocalDate.now().plusDays(10));
-        bill.setClosingDate(LocalDate.now());
+        bill.setDueDate(LocalDate.now().plusDays(11));
+        bill.setClosingDate(LocalDate.now().plusDays(1));
         bill.setAmount(new BigDecimal("500.00"));
         bill.setStatus(CreditCardBillStatus.OPEN);
         return bill;

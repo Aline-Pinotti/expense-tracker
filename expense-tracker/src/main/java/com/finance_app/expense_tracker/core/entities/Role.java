@@ -3,6 +3,7 @@ package com.finance_app.expense_tracker.core.entities;
 import com.finance_app.expense_tracker.core.enums.RoleAuthority;
 import jakarta.persistence.*;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -14,6 +15,11 @@ public class Role {
     private String authority;
 
     public Role() {
+    }
+
+    public Role(UUID id, String authority) {
+        this.id = id;
+        this.authority = authority;
     }
 
     public UUID getId() {
@@ -30,5 +36,25 @@ public class Role {
 
     public void setAuthority(String authority) {
         this.authority = authority;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return Objects.equals(id, role.id) && Objects.equals(authority, role.authority);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, authority);
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", authority='" + authority + '\'' +
+                '}';
     }
 }

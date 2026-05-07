@@ -41,6 +41,16 @@ public class Installment {
     public Installment() {
     }
 
+    public Installment(UUID id, String description, BigDecimal amount, LocalDate paidDay, Integer number, LocalDate dueDate, Transaction transaction) {
+        this.id = id;
+        this.description = description;
+        this.amount = amount;
+        this.paidDay = paidDay;
+        this.number = number;
+        this.dueDate = dueDate;
+        this.transaction = transaction;
+    }
+
     public Installment(UUID id, String description, BigDecimal amount, LocalDate paidDay, Integer number, LocalDate dueDate, Instant createdAt, Instant updatedAt, Transaction transaction) {
         this.id = id;
         this.description = description;
