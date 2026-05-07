@@ -7,9 +7,7 @@ import java.util.UUID;
 
 public class BankDTO {
     private UUID id;
-    private String name;
-    private String number;
-    private String colorLabel;
+    private String name, number, colorLabel;
 
     public BankDTO() {
     }
