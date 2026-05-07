@@ -25,13 +25,9 @@ public class RoleController {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @GetMapping(value = "/{authority}")
-    public ResponseEntity<Page<RoleDTO>> findByAuthority(@PathVariable String authority, Pageable pageable) {
-        return ResponseEntity.ok().body(service.findByAuthority(authority, pageable));
-    }
-
     @GetMapping
-    public ResponseEntity<Page<RoleDTO>> findAll(Pageable pageable) {
+    public ResponseEntity<Page<RoleDTO>> findRoles(@RequestParam(required = false) String authority, Pageable pageable) {
+        if (authority != null) {return ResponseEntity.ok().body(service.findByAuthority(authority, pageable));}
         return ResponseEntity.ok().body(service.findAllPaged(pageable));
     }
 

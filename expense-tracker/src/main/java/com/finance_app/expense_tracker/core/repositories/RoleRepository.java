@@ -12,6 +12,6 @@ import java.util.UUID;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, UUID> {
 
-    public Page<Role> findByAuthorityContaining(String authority, Pageable pageable);
+    public Page<Role> findByAuthorityContainingIgnoreCase(String authority, Pageable pageable);
 }
 

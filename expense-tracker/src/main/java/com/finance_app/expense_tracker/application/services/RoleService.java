@@ -31,7 +31,7 @@ public class RoleService {
 
     @Transactional(readOnly = true)
     public Page<RoleDTO> findByAuthority(String authority, Pageable pageable) {
-        return repository.findByAuthorityContaining(authority, pageable).map(RoleDTO::new);
+        return repository.findByAuthorityContainingIgnoreCase(authority, pageable).map(RoleDTO::new);
     }
 
     @Transactional(readOnly = true)
