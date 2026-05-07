@@ -13,7 +13,7 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
 
-    public Page<User> findByUsernameContaining(String username, Pageable pageable);
-    public Optional<User> findByEmail(String email);
+    public Page<User> findByUsernameContainingIgnoreCase(String username, Pageable pageable);
+    public Optional<User> findByEmailIgnoreCase(String email);
 }
 

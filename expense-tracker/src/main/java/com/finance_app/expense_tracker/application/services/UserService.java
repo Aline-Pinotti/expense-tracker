@@ -12,17 +12,16 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
 public class UserService {
 
     // TODO: changing (revoking or adding new) role to user
+    // TODO: list user roles... roles by user
 
     @Autowired
     private UserRepository repository;
@@ -34,12 +33,12 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserDTO findByEmail(String email) {
-        return new UserDTO(repository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found")));
+        return new UserDTO(repository.findByEmailIgnoreCase(email).orElseThrow(() -> new RuntimeException("User not found")));
     }
 
     @Transactional(readOnly = true)
     public Page<UserDTO> findByUserName(String username, Pageable pageable) {
-        return repository.findByUsernameContaining(username, pageable).map(UserDTO::new);
+        return repository.findByUsernameContainingIgnoreCase(username, pageable).map(UserDTO::new);
     }
 
     @Transactional(readOnly = true)

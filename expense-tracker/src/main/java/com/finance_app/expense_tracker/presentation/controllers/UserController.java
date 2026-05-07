@@ -2,6 +2,8 @@ package com.finance_app.expense_tracker.presentation.controllers;
 
 import com.finance_app.expense_tracker.application.dtos.UserDTO;
 import com.finance_app.expense_tracker.application.services.UserService;
+import org.apache.juli.logging.Log;
+import org.apache.juli.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,8 @@ import java.util.UUID;
 @RequestMapping("/users")
 public class UserController {
 
+    Log LOG = LogFactory.getLog(UserController.class);
+
     @Autowired
     private UserService service;
 
@@ -25,19 +29,24 @@ public class UserController {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @GetMapping(value = "/{email}")
-    public ResponseEntity<UserDTO> findById(@PathVariable String email) {
-        return ResponseEntity.ok(service.findByEmail(email));
-    }
-
-    @GetMapping(value = "/{username}")
-    public ResponseEntity<Page<UserDTO>> findByUsername(@PathVariable String username, Pageable pageable) {
-        return ResponseEntity.ok().body(service.findByUserName(username, pageable));
-    }
-
     @GetMapping
     public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable) {
         return ResponseEntity.ok().body(service.findAllPaged(pageable));
+    }
+
+    @GetMapping(value = "/search")
+    public ResponseEntity<?> search(
+            @RequestParam(required = false) String username,
+            @RequestParam(required = false) String email,
+            Pageable pageable) {
+
+        if (username != null) {
+            LOG.info("Searching for: " + username);
+            return ResponseEntity.ok().body(service.findByUserName(username, pageable));
+        } else if (email != null) {
+            return ResponseEntity.ok().body(service.findByEmail(email));
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @PostMapping
