@@ -24,6 +24,8 @@ public class CreditCard {
     private BigDecimal limit;
     private int closingDay;
     private int dueDay;
+    @Convert(converter = YearMonthConverter.class)
+    @Column(columnDefinition = "VARCHAR(7)")
     private YearMonth expirationDate;
     private Boolean isInternational;
     @CreationTimestamp
@@ -134,7 +136,7 @@ public class CreditCard {
         this.account = account;
     }
 
-    public Boolean getInternational() {
+    public Boolean isInternational() {
         return isInternational;
     }
 
