@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Component
-@Profile("test")
+@Profile("test") // User H2 Local Memory Database
 @Order(1)
 public class DataSQLCreator implements CommandLineRunner {
 
@@ -58,18 +58,16 @@ public class DataSQLCreator implements CommandLineRunner {
         installments = ObjectFactory.createInstallments(transactions);
         notifications = ObjectFactory.createNotifications(users);
 
-        //insertBanks();
         LOG.info("Creating SQL file with insert statements...");
         insert(banks);
-        //insertRoles();
         insert(Arrays.asList(roles.toArray()));
         insertUser();
         insert(notifications);
         insert(accounts);
         insert(creditCards);
-//        insert(creditCardBills);
-//        insert(transactions);
-//        insert(installments);
+        insert(creditCardBills);
+        insert(transactions); // TODO: subcategories (similar to user_roles)
+        insert(installments);
         LOG.info("Seedings done...");
 
         backUpContent += "-- backup created at " + Instant.now().toString() + " --";
@@ -158,8 +156,9 @@ public class DataSQLCreator implements CommandLineRunner {
         for (Field field : classe.getDeclaredFields()) {
 
             field.setAccessible(true);
+            Class<?> fieldType = field.getType();
 
-            if (Map.class.isAssignableFrom(field.getType()) || Collection.class.isAssignableFrom(field.getType())) continue;
+            if (Map.class.isAssignableFrom(fieldType) || Collection.class.isAssignableFrom(fieldType)) continue;
 
             try {
                 if (count != 0) {
@@ -169,7 +168,7 @@ public class DataSQLCreator implements CommandLineRunner {
                 sqlContent += toSnakeCase(field.getName());
                 value = field.get(object).toString();
 
-                if (field.getType().equals(String.class) || field.getType().equals(UUID.class) || field.getType().equals(Instant.class) || field.getType().equals(LocalDate.class)) {
+                if (fieldType.equals(String.class) || fieldType.equals(UUID.class) || fieldType.equals(Instant.class) || fieldType.equals(LocalDate.class)) {
                     sqlValues += "'" + value + "'";
                 } else {
                     sqlValues += value;
@@ -223,10 +222,11 @@ public class DataSQLCreator implements CommandLineRunner {
         Class<?> classe = object.getClass();
 
         for (Field field : classe.getDeclaredFields()) {
-
             field.setAccessible(true);
 
-            if (Map.class.isAssignableFrom(field.getType()) || Collection.class.isAssignableFrom(field.getType())) continue;
+            Class<?> fieldType = field.getType();
+
+            if (Map.class.isAssignableFrom(fieldType) || Collection.class.isAssignableFrom(fieldType)) continue;
 
             try {
                 if (count != 0) {
@@ -235,9 +235,13 @@ public class DataSQLCreator implements CommandLineRunner {
                 }
                 count++;
 
-                if(isCustom(classe.getDeclaredField(field.getName()).getType().getPackageName())) {
-                    sqlContent += toSnakeCase(field.getName() + "_id"); //example: account_id, credit_card_id, etc
-                    sqlValues += "'" + getNestedFieldValue(object, field.getName(), "id") + "'";
+                value = String.valueOf(field.get(object));
+
+                if(isCustom(fieldType.getPackageName()) && !fieldType.isEnum()) {
+                    sqlContent += toSnakeCase(fieldType.getSimpleName() + "_id"); //example: account_id, credit_card_id, etc
+                    if (value.equals(null) || value.equals("null")) {
+                        sqlValues += "null";
+                    } else sqlValues += "'" + getNestedFieldValue(object, field.getName(), "id") + "'";
                     continue;
                 }
 
@@ -246,12 +250,11 @@ public class DataSQLCreator implements CommandLineRunner {
                 } else {
                     sqlContent += toSnakeCase(field.getName());
                 }
-                value = String.valueOf(field.get(object));
 
-                if ((field.getType().equals(Instant.class) || (field.getType().equals(LocalDateTime.class))) && value.equals("null")) {
+                if ((fieldType.equals(Instant.class) || (fieldType.equals(LocalDateTime.class)) || fieldType.equals(LocalDate.class)) && value.equals("null")) {
                     if(field.getName().equals("createdAt") || field.getName().equals("updatedAt")) sqlValues += "'" + String.valueOf(Instant.now()) + "'";
                     else sqlValues += "null";
-                } else if ((field.getType().equals(String.class) || field.getType().equals(UUID.class) || field.getType().equals(Instant.class) || field.getType().equals(LocalDate.class) || field.getType().equals(LocalDateTime.class))) {
+                } else if (fieldType.equals(String.class) || fieldType.equals(UUID.class) || fieldType.equals(Instant.class) || fieldType.equals(LocalDate.class) || fieldType.equals(LocalDateTime.class) || fieldType.isEnum()) {
                     sqlValues += "'" + value + "'";
                 } else {
                     sqlValues += value;

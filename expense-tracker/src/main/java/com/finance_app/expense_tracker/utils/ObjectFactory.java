@@ -86,6 +86,8 @@ public class ObjectFactory {
         return transactions;
    }
 
+   // TODO: transaction_sub_category
+
     // ============ Installment ============
     public static List<Installment> createInstallments(List<Transaction> existingTransactions) {
         List<Installment> installments = new ArrayList<>();
