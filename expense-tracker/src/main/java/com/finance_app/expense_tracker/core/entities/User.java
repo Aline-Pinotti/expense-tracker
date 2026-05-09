@@ -43,7 +43,7 @@ public class User {
         this.updatedAt = Instant.now();
     }
 
-    public User(UUID id, String username, String email, String password, List<Role> roles) {
+    public User(UUID id, String username, String email, String password, Set<Role> roles) {
         this.id = id;
         this.username = username;
         this.email = email;

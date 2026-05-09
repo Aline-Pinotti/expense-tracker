@@ -55,6 +55,11 @@ public class Notification {
         this.updatedAt = updatedAt;
     }
 
+    public boolean isRead() {
+        return readAt != null;
+    }
+    public void setRead(boolean read) {}
+
     public UUID getId() {
         return id;
     }

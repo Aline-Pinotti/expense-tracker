@@ -10,7 +10,6 @@ import java.util.*;
 public class UserDTO {
     private UUID id;
     private String username, email;
-    private Set<Role> roles = new HashSet<>();
 
     public UserDTO() {
     }
@@ -51,11 +50,4 @@ public class UserDTO {
         this.email = email;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
 }

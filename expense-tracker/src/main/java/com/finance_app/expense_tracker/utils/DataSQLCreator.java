@@ -13,6 +13,7 @@ import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Component
@@ -26,7 +27,7 @@ public class DataSQLCreator implements CommandLineRunner {
     String backUpContent = ""; // data.sql
 
     List<Bank> banks = new ArrayList<>();
-    List<Role> roles = new ArrayList<>();
+    Set<Role> roles = new HashSet<>();
     List<User> users = new ArrayList<>();
     List<Account> accounts = new ArrayList<>();
     List<Transaction> transactions = new ArrayList<>();
@@ -35,7 +36,6 @@ public class DataSQLCreator implements CommandLineRunner {
     List<Installment> installments = new ArrayList<>();
     //List<Budget> budgets = new ArrayList<>(); // TODO
     List<Notification> notifications = new ArrayList<>();
-    // TODO
 
     public DataSQLCreator(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -62,11 +62,15 @@ public class DataSQLCreator implements CommandLineRunner {
         LOG.info("Creating SQL file with insert statements...");
         insert(banks);
         //insertRoles();
-        insert(roles);
+        insert(Arrays.asList(roles.toArray()));
         insertUser();
+        insert(notifications);
         insert(accounts);
         insert(creditCards);
-        // TODO: inserting other classes
+//        insert(creditCardBills);
+//        insert(transactions);
+//        insert(installments);
+        LOG.info("Seedings done...");
 
         backUpContent += "-- backup created at " + Instant.now().toString() + " --";
         createSqlFile(fileName, backUpContent);
@@ -210,6 +214,7 @@ public class DataSQLCreator implements CommandLineRunner {
     private String createInsertSql(Object object) {
 
         if (object == null) { return null;}
+
         String sqlContent = "INSERT INTO " + "tb_" + toSnakeCase(object.getClass().getSimpleName()) + "(";
         String sqlValues = "VALUES(";
         String value = "null";
@@ -243,9 +248,10 @@ public class DataSQLCreator implements CommandLineRunner {
                 }
                 value = String.valueOf(field.get(object));
 
-                if (field.getType().equals(Instant.class) && value.equals("null")) {
-                    sqlValues += "'" + String.valueOf(Instant.now()) + "'";;
-                } else if ((field.getType().equals(String.class) || field.getType().equals(UUID.class) || field.getType().equals(Instant.class) || field.getType().equals(LocalDate.class))) {
+                if ((field.getType().equals(Instant.class) || (field.getType().equals(LocalDateTime.class))) && value.equals("null")) {
+                    if(field.getName().equals("createdAt") || field.getName().equals("updatedAt")) sqlValues += "'" + String.valueOf(Instant.now()) + "'";
+                    else sqlValues += "null";
+                } else if ((field.getType().equals(String.class) || field.getType().equals(UUID.class) || field.getType().equals(Instant.class) || field.getType().equals(LocalDate.class) || field.getType().equals(LocalDateTime.class))) {
                     sqlValues += "'" + value + "'";
                 } else {
                     sqlValues += value;

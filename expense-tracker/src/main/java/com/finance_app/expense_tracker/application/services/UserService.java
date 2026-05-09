@@ -82,7 +82,7 @@ public class UserService {
 
         entity.getRoles().clear();
         //dto.getRoles().forEach(roleDTO -> entity.getRoles().add(new RoleService().findById(roleDTO.getId()).toEntity()));
-        entity.getRoles().addAll(dto.getRoles());
+        //entity.getRoles().addAll(dto.getRoles());
 
         return repository.save(entity);
     }

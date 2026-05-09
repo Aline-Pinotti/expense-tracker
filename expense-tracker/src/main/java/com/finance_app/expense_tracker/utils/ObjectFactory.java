@@ -7,12 +7,11 @@ import com.finance_app.expense_tracker.core.enums.TransactionPaymentMethod;
 import com.finance_app.expense_tracker.core.enums.TransactionType;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class ObjectFactory {
     // ============ Bank ============
@@ -28,19 +27,19 @@ public class ObjectFactory {
     }
 
     // ============ Role ============
-    public static List<Role> createRoles() {
-        List<Role> roles = new ArrayList<>();
+    public static Set<Role> createRoles() {
+        Set<Role> roles = new HashSet<>();
         roles.add(new Role(UUID.randomUUID(), "ROLE_USER"));
         roles.add(new Role(UUID.randomUUID(), "ROLE_ADMIN"));
         return roles;
     }
 
     // ============ User ============
-    public static List<User> createUsersWithRoles(List<Role> existingRoles) {
+    public static List<User> createUsersWithRoles(Set<Role> existingRoles) {
         List<User> users = new ArrayList<>();
 //        List<Role> existingRoles = createRoles();
-        List<Role> userRole = new ArrayList<>();
-        userRole.add(existingRoles.get(0));
+        Set<Role> userRole = new HashSet<>();
+        userRole.add(existingRoles.stream().findFirst().get());
 
         users.add(new User(UUID.randomUUID(), "Mary Red", "mary@example.com", "123456", userRole));
         users.add(new User(UUID.randomUUID(), "Jhon Blue", "jhon@example.com", "123456", userRole));
@@ -100,6 +99,9 @@ public class ObjectFactory {
         notifications.add(new Notification(UUID.randomUUID(),"Welcome", "Welcome to the application. We are glad having you here", LocalDateTime.now(), users.get(0)));
         notifications.add(new Notification(UUID.randomUUID(),"Welcome", "Welcome to the application. We are glad having you here", LocalDateTime.now(), users.get(1)));
         notifications.add(new Notification(UUID.randomUUID(),"Welcome", "Welcome to the application. We are glad having you here", LocalDateTime.now(), users.get(2)));
+        Notification readNotification = new Notification(UUID.randomUUID(),"Atention", "You have a bill to pay until tomorrow!", LocalDateTime.now(), users.get(0));
+        readNotification.setReadAt(Instant.now());
+        notifications.add(readNotification);
         return notifications;
     }
 }

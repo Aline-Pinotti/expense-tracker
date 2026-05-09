@@ -1,7 +1,8 @@
 package com.finance_app.expense_tracker.presentation.controllers;
 
-import com.finance_app.expense_tracker.application.dtos.BankDTO;
-import com.finance_app.expense_tracker.application.services.BankService;
+import com.finance_app.expense_tracker.application.dtos.NotificationDTO;
+import com.finance_app.expense_tracker.application.services.NotificationService;
+import org.apache.juli.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,24 +15,34 @@ import java.net.URI;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/banks")
-public class BankController {
+@RequestMapping("/notifications")
+public class NotificationController {
 
     @Autowired
-    private BankService service;
+    private NotificationService service;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<BankDTO> findById(@PathVariable UUID id) {
+    public ResponseEntity<NotificationDTO> findById(@PathVariable UUID id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
+//    TODO: Find notifications startinf from a seted date
     @GetMapping
-    public ResponseEntity<Page<BankDTO>> findAll(Pageable pageable) {
+    public ResponseEntity<Page<NotificationDTO>> findAll(@RequestParam(required = false) UUID userId,
+                                                         @RequestParam(required = false, defaultValue = "false") Boolean isRead,
+                                                         Pageable pageable) {
+        if (userId != null) {
+            if (isRead) {
+                return ResponseEntity.ok().body(service.findUnreadByUser(userId, pageable));
+            }
+            return ResponseEntity.ok().body(service.findAllByUser(userId, pageable));
+        }
         return ResponseEntity.ok().body(service.findAllPaged(pageable));
     }
 
+
     @PostMapping
-    public ResponseEntity<BankDTO> insert(@RequestBody BankDTO dto) {
+    public ResponseEntity<NotificationDTO> insert(@RequestBody NotificationDTO dto) {
         dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();
@@ -39,7 +50,7 @@ public class BankController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<BankDTO> update(@PathVariable UUID id, @RequestBody BankDTO dto) {
+    public ResponseEntity<NotificationDTO> update(@PathVariable UUID id, @RequestBody NotificationDTO dto) {
         return ResponseEntity.ok().body(service.update(id, dto));
     }
 
@@ -48,5 +59,4 @@ public class BankController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
-    
 }
