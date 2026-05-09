@@ -2,7 +2,6 @@ package com.finance_app.expense_tracker.presentation.controllers;
 
 import com.finance_app.expense_tracker.application.dtos.NotificationDTO;
 import com.finance_app.expense_tracker.application.services.NotificationService;
-import org.apache.juli.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
