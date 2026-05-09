@@ -14,6 +14,7 @@ import java.lang.reflect.Field;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.*;
 
 @Component
@@ -251,10 +252,10 @@ public class DataSQLCreator implements CommandLineRunner {
                     sqlContent += toSnakeCase(field.getName());
                 }
 
-                if ((fieldType.equals(Instant.class) || (fieldType.equals(LocalDateTime.class)) || fieldType.equals(LocalDate.class)) && value.equals("null")) {
+                if ((fieldType.equals(Instant.class) || (fieldType.equals(LocalDateTime.class))  || fieldType.equals(YearMonth.class) || fieldType.equals(LocalDate.class)) && value.equals("null")) {
                     if(field.getName().equals("createdAt") || field.getName().equals("updatedAt")) sqlValues += "'" + String.valueOf(Instant.now()) + "'";
                     else sqlValues += "null";
-                } else if (fieldType.equals(String.class) || fieldType.equals(UUID.class) || fieldType.equals(Instant.class) || fieldType.equals(LocalDate.class) || fieldType.equals(LocalDateTime.class) || fieldType.isEnum()) {
+                } else if (fieldType.equals(String.class) || fieldType.equals(UUID.class) || fieldType.equals(Instant.class) || fieldType.equals(LocalDate.class) || fieldType.equals(LocalDateTime.class) || fieldType.isEnum() || fieldType.equals(YearMonth.class)) {
                     sqlValues += "'" + value + "'";
                 } else {
                     sqlValues += value;
@@ -270,6 +271,7 @@ public class DataSQLCreator implements CommandLineRunner {
         }
         sqlContent += ") ";
         sqlValues += ")";
+
 
         return sqlContent + sqlValues;
     }
