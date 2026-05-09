@@ -32,7 +32,7 @@ public class CreditCardBill {
     @JoinColumn(name = "credit_card_id",
                 foreignKey = @ForeignKey(name = "fk_credit_card_bill_credit_card"))
     private CreditCard card;
-    @OneToMany(mappedBy = "billing", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "creditCardBill", cascade = CascadeType.ALL)
     private List<Transaction> transactions = new ArrayList<>();
 
     @CreationTimestamp

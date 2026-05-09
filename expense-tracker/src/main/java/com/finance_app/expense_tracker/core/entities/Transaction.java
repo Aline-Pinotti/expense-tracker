@@ -70,9 +70,9 @@ public class Transaction {
     private Account account; // ou null se for cartão
     //private CreditCard creditCard; // quando for compra no cartão, vai estar vinculada através da CreditCardBill
     @ManyToOne
-    @JoinColumn(name = "billing_id",
+    @JoinColumn(name = "credit_card_bill_id",
             foreignKey = @ForeignKey(name = "fk_transaction_billing"))
-    private CreditCardBill billing; // If credit card
+    private CreditCardBill creditCardBill; // If credit card
 
     public Transaction() {
     }
@@ -92,7 +92,7 @@ public class Transaction {
         this.paymentMethod = paymentMethod;
         this.user = user;
         this.account = account;
-        this.billing = billing;
+        this.creditCardBill = billing;
     }
 
     public Transaction(UUID id, String description, BigDecimal amount, LocalDate date, Boolean isFixed, LocalDate dueDate, LocalDate paidDate, String inOut, Integer numberOfInstallments, TransactionType type, TransactionCategory mainCategory, TransactionPaymentMethod paymentMethod, Instant createdAt, Instant updatedAt, User user, Account account, CreditCardBill billing) {
@@ -112,7 +112,7 @@ public class Transaction {
         this.updatedAt = updatedAt;
         this.user = user;
         this.account = account;
-        this.billing = billing;
+        this.creditCardBill = billing;
     }
 
     public UUID getId() {
@@ -259,12 +259,12 @@ public class Transaction {
         this.account = account;
     }
 
-    public CreditCardBill getBilling() {
-        return billing;
+    public CreditCardBill getCreditCardBill() {
+        return creditCardBill;
     }
 
-    public void setBilling(CreditCardBill billing) {
-        this.billing = billing;
+    public void setCreditCardBill(CreditCardBill creditCardBill) {
+        this.creditCardBill = creditCardBill;
     }
 
     @Override
@@ -286,7 +286,7 @@ public class Transaction {
                 ", updatedAt=" + updatedAt +
                 ", user=" + user +
                 ", account=" + account +
-                ", billing=" + billing +
+                ", billing=" + creditCardBill.getId() +
                 '}';
     }
 }

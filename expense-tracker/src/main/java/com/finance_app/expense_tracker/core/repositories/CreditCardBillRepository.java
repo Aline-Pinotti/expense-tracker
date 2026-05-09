@@ -14,7 +14,7 @@ import java.util.UUID;
 @Repository
 public interface CreditCardBillRepository extends JpaRepository<CreditCardBill, UUID> {
     @Query("SELECT t FROM Transaction t " +
-           "JOIN CreditCardBill ccb ON t.billing = ccb " +
+           "JOIN CreditCardBill ccb ON t.creditCardBill = ccb " +
            "WHERE YEAR(ccb.dueDate) = :year " +
            "AND MONTH(ccb.dueDate) = :month " +
            "AND t.dueDate = ccb.dueDate")
