@@ -36,13 +36,15 @@ public class CreditCardService {
         return repository.findAll(pageable).map(CreditCardDTO::new);
     }
 
-    //TODO: creditCardByAccount
+    @Transactional(readOnly = true)
+    public Page<CreditCardDTO> findByAccountId(UUID accountId, Pageable pageable) {
+        return repository.findByAccountId(accountId, pageable).map(CreditCardDTO::new);
+    }
 
-// TODO:
-//    @Transactional(readOnly = true)
-//    public Page<CreditCardDTO> findAllByUser(UUID userId, Pageable pageable) {
-//        return repository.findByUserId(userId, pageable).map(CreditCardDTO::new);
-//    }
+    @Transactional(readOnly = true)
+    public Page<CreditCardDTO> findAllByUser(UUID userId, Pageable pageable) {
+        return repository.findByAccountUserId(userId, pageable).map(CreditCardDTO::new);
+    }
 
     @Transactional
     public CreditCardDTO insert(CreditCardDTO dto) {

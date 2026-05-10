@@ -25,11 +25,16 @@ public class CreditCardController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<CreditCardDTO>> findAll(@RequestParam(required = false) UUID userId, Pageable pageable) {
-        // TODO: findByUser, findByAccount
-        //        if (userId != null) {
-//            return ResponseEntity.ok().body(service.findAllByUser(userId, pageable));
-//        }
+    public ResponseEntity<Page<CreditCardDTO>> findAll(@RequestParam(required = false) UUID userId,
+                                                       @RequestParam(required = false) UUID accountId,
+                                                       Pageable pageable) {
+        if (accountId != null) {
+            return ResponseEntity.ok().body(service.findByAccountId(accountId, pageable));
+        }
+        if (userId != null) {
+            return ResponseEntity.ok().body(service.findAllByUser(userId, pageable));
+        }
+
         return ResponseEntity.ok().body(service.findAllPaged(pageable));
     }
 
