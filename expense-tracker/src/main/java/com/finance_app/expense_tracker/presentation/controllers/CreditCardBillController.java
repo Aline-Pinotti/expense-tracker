@@ -12,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.UUID;
 
 @Controller
@@ -29,10 +30,12 @@ public class CreditCardBillController {
     //    TODO: Find CreditCardBills starting from a seted date
     @GetMapping
     public ResponseEntity<Page<CreditCardBillDTO>> findAll(@RequestParam(required = false) LocalDate dueDate,
+                                                           @RequestParam(required = false) YearMonth billingMonth,
+                                                           @RequestParam(required = false) UUID creditCardId,
                                                            Pageable pageable) {
-        if (dueDate != null) {
-            return ResponseEntity.ok().body(service.findByDueDate(dueDate, pageable));
-        }
+        if (creditCardId != null) return ResponseEntity.ok().body(service.findByCreditCard(creditCardId, pageable));
+        if (billingMonth != null) return ResponseEntity.ok().body(service.findByBilllingMonth(billingMonth, pageable));
+        if (dueDate != null) return ResponseEntity.ok().body(service.findByDueDate(dueDate, pageable));
         return ResponseEntity.ok().body(service.findAllPaged(pageable));
     }
 

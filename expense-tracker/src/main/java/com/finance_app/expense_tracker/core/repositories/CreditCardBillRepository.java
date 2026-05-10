@@ -26,5 +26,7 @@ public interface CreditCardBillRepository extends JpaRepository<CreditCardBill, 
 //    Page<Transaction> findTransactionsByBillingMonth(@Param("year") int year, @Param("month") int month, Pageable pageable);
 
     Page<CreditCardBill> findByDueDate(LocalDate dueDate, Pageable pageable);
+    Page<CreditCardBill> findByDueDateBetween(LocalDate initialDueDate, LocalDate finalDueDate, Pageable pageable);
+    Page<CreditCardBill> findByCardId(UUID creditCardId, Pageable pageable);
 }
 

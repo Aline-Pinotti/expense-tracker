@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.UUID;
 
 @Service
@@ -41,8 +42,17 @@ public class CreditCardBillService {
     }
 
     @Transactional(readOnly = true)
+    public Page<CreditCardBillDTO> findByBilllingMonth(YearMonth billingMonth, Pageable pageable) {
+       return repository.findByDueDateBetween(billingMonth.atDay(1), billingMonth.atEndOfMonth(), pageable).map(CreditCardBillDTO::new);
+    }
+
+    @Transactional(readOnly = true)
     public Page<CreditCardBillDTO> findByDueDate(LocalDate dueDate, Pageable pageable) {
         return repository.findByDueDate(dueDate, pageable).map(CreditCardBillDTO::new);
+    }
+    @Transactional(readOnly = true)
+    public Page<CreditCardBillDTO> findByCreditCard(UUID creditCardId, Pageable pageable) {
+        return repository.findByCardId(creditCardId, pageable).map(CreditCardBillDTO::new);
     }
 
     @Transactional
@@ -87,4 +97,5 @@ public class CreditCardBillService {
 
         return repository.save(entity);
     }
+
 }
