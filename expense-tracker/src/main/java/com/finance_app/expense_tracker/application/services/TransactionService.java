@@ -45,16 +45,26 @@ public class TransactionService {
     }
 
 //    @Transactional(readOnly = true)
+//    public Page<TransactionUserDTO> findByUser(UUID userId, Pageable pageable) {
+//        return repository.findByCardId(userId, pageable).map(TransactionDTO::new);
+//    }
+
+//    @Transactional(readOnly = true)
 //    public Page<TransactionDTO> findByBilllingMonth(YearMonth billingMonth, Pageable pageable) {
 //        return repository.findByDueDateBetween(billingMonth.atDay(1), billingMonth.atEndOfMonth(), pageable).map(TransactionDTO::new);
 //    }
 //
 //    @Transactional(readOnly = true)
-//    public Page<TransactionDTO> findByDueDate(LocalDate dueDate, Pageable pageable) {
+//    public Page<TransactionDTO> findByDueDate(LocalDate dueDate, Pageable pageable) { //paidDate,
 //        return repository.findByDueDate(dueDate, pageable).map(TransactionDTO::new);
 //    }
 //    @Transactional(readOnly = true)
-//    public Page<TransactionDTO> findByCreditCard(UUID creditCardId, Pageable pageable) {
+//    public Page<TransactionBillDTO> findByCreditCard(UUID creditCardId, Pageable pageable) {
+//        // TODO: Credit Card Bill transactions //to find the bill of the credit card, give creditcardId and dueDate
+//        return repository.findByCardId(creditCardId, pageable).map(TransactionDTO::new);
+//    }
+//    @Transactional(readOnly = true)
+//    public Page<TransactionAccountDTO> findByAccount(UUID accountId, Pageable pageable) {
 //        return repository.findByCardId(creditCardId, pageable).map(TransactionDTO::new);
 //    }
 

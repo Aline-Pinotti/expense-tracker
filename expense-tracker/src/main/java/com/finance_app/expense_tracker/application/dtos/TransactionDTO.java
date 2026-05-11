@@ -52,8 +52,8 @@ public class TransactionDTO {
         this.mainCategory = entity.getMainCategory();
         this.paymentMethod = entity.getPaymentMethod();
         this.user = new UserDTO(entity.getUser());
-        if (entity.getAccount().getId() != null) this.accountId = entity.getAccount().getId();
-        if (entity.getCreditCardBill().getId() != null)this.creditCardBillId = entity.getCreditCardBill().getId();
+        if (entity.getAccount() != null) this.accountId = entity.getAccount().getId();
+        if (entity.getCreditCardBill() != null) this.creditCardBillId = entity.getCreditCardBill().getId();
     }
 
     public TransactionDTO(UUID id, String description, BigDecimal amount, LocalDate date, Boolean isFixed, LocalDate dueDate, LocalDate paidDate, String inOut, Integer numberOfInstallments, TransactionType type, TransactionCategory mainCategory, TransactionPaymentMethod paymentMethod, UserDTO user, UUID accountId, UUID creditCardBillId) {
