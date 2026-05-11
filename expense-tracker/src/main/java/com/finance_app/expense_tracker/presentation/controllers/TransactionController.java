@@ -31,8 +31,9 @@ public class TransactionController {
     @GetMapping
     public ResponseEntity<Page<TransactionDTO>> findAll(@RequestParam(required = false) LocalDate dueDate,
                                                            @RequestParam(required = false) YearMonth billingMonth,
-                                                           @RequestParam(required = false) UUID creditCardId,
+                                                           @RequestParam(required = false) UUID userId,
                                                            Pageable pageable) {
+        if (userId != null) return ResponseEntity.ok().body(service.findByUser(userId, pageable));
 //        if (creditCardId != null) return ResponseEntity.ok().body(service.findByCreditCard(creditCardId, pageable));
 //        if (billingMonth != null) return ResponseEntity.ok().body(service.findByBilllingMonth(billingMonth, pageable));
 //        if (dueDate != null) return ResponseEntity.ok().body(service.findByDueDate(dueDate, pageable));
