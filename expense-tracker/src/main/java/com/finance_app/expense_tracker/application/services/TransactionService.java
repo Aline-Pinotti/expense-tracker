@@ -44,6 +44,7 @@ public class TransactionService {
         return repository.findAll(pageable).map(TransactionDTO::new);
     }
 
+    // TODO: findByDescription
 //    @Transactional(readOnly = true)
 //    public Page<TransactionUserDTO> findByUser(UUID userId, Pageable pageable) {
 //        return repository.findByCardId(userId, pageable).map(TransactionDTO::new);
@@ -100,6 +101,7 @@ public class TransactionService {
         Transaction entity = new Transaction();
 
         if(id != null) entity = repository.getReferenceById(id);
+        else entity.setUser(userRepository.getReferenceById(dto.getUser().getId())); // can't change the user!
 
         entity.setDescription(dto.getDescription());
         entity.setAmount(dto.getAmount());
@@ -113,7 +115,6 @@ public class TransactionService {
         entity.setMainCategory(dto.getMainCategory());
         entity.setPaymentMethod(dto.getPaymentMethod());
 
-        entity.setUser(userRepository.getReferenceById(dto.getUser().getId()));
         if (dto.getAccountId() != null) entity.setAccount(accountRepository.getReferenceById(dto.getAccountId()));
         if (dto.getCreditCardBillId() != null) entity.setCreditCardBill(creditCardBillRepository.getReferenceById(dto.getCreditCardBillId()));
 
