@@ -80,7 +80,7 @@ public class ObjectFactory {
     // ============ Transaction ============
     public static List<Transaction> createTransactions(List<User> existingUsers, List<Account> existingAccounts, List<CreditCardBill> existingBills) {
         List<Transaction> transactions = new ArrayList<>();
-        transactions.add(new Transaction(UUID.randomUUID(), "Description", new BigDecimal("100.00"), LocalDate.now(), false, LocalDate.now().plusDays(5), LocalDate.now().plusDays(5), "OUT", 1, TransactionType.EXPENSE, TransactionCategory.FOOD, TransactionPaymentMethod.DEBIT_CARD, existingUsers.get(0), null, null));
+        transactions.add(new Transaction(UUID.randomUUID(), "Description", new BigDecimal("100.00"), LocalDate.now(), false, LocalDate.now().plusDays(5), LocalDate.now().plusDays(5), "OUT", 2, TransactionType.EXPENSE, TransactionCategory.FOOD, TransactionPaymentMethod.DEBIT_CARD, existingUsers.get(0), null, null));
         transactions.add(new Transaction(UUID.randomUUID(), "Description", new BigDecimal("100.00"), LocalDate.now(), false, LocalDate.now().plusDays(10), LocalDate.now().plusDays(10), "OUT", 1, TransactionType.EXPENSE, TransactionCategory.ENTERTAINMENT, TransactionPaymentMethod.CREDIT_CARD, existingUsers.get(0), null, existingBills.get(0)));
         transactions.add(new Transaction(UUID.randomUUID(), "Description", new BigDecimal("100.00"), LocalDate.now(), false, LocalDate.now().plusDays(5), LocalDate.now().plusDays(5), "OUT", 1, TransactionType.EXPENSE, TransactionCategory.FOOD, TransactionPaymentMethod.CASH, existingUsers.get(1), existingAccounts.get(0), null));
         return transactions;

@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### data.sql
-/data.sql
+*/data.sql

@@ -3,6 +3,8 @@ package com.finance_app.expense_tracker.presentation.controllers.exceptions;
 import com.finance_app.expense_tracker.application.services.exceptions.DatabaseException;
 import com.finance_app.expense_tracker.application.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.juli.logging.Log;
+import org.apache.juli.logging.LogFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -14,6 +16,8 @@ import java.time.Instant;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
+
+	Log LOG = LogFactory.getLog(ResourceExceptionHandler.class);
 
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<StandardError> entityNotFound(ResourceNotFoundException e, HttpServletRequest request) {
@@ -33,9 +37,12 @@ public class ResourceExceptionHandler {
 		StandardError err = new StandardError();
 		err.setTimestamp(Instant.now());
 		err.setStatus(status.value());
-		err.setError("Resource not found");
+		err.setError("Runtime exception");
 		err.setMessage(e.getMessage());
 		err.setPath(request.getRequestURI());
+
+		LOG.fatal(e.getCause());
+
 		return ResponseEntity.status(status).body(err);
 	}
 	
