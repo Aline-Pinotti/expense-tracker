@@ -18,7 +18,7 @@ import java.time.YearMonth;
 import java.util.*;
 
 @Component
-@Profile("test") // User H2 Local Memory Database
+@Profile("testy") // User H2 Local Memory Database -- any name just to stop it for now =]
 @Order(1)
 public class DataSQLCreator implements CommandLineRunner {
 
