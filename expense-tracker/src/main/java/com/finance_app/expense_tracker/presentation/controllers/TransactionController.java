@@ -1,6 +1,7 @@
 package com.finance_app.expense_tracker.presentation.controllers;
 
 import com.finance_app.expense_tracker.application.dtos.TransactionDTO;
+import com.finance_app.expense_tracker.application.filters.TransactionFilter;
 import com.finance_app.expense_tracker.application.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,13 +32,22 @@ public class TransactionController {
     @GetMapping
     public ResponseEntity<Page<TransactionDTO>> findAll(@RequestParam(required = false) LocalDate dueDate,
                                                            @RequestParam(required = false) YearMonth billingMonth,
+                                                           @RequestParam(required = false) UUID creditCardBillId,
                                                            @RequestParam(required = false) UUID userId,
+                                                           @RequestParam(required = false) LocalDate fromDate,
+                                                           @RequestParam(required = false) LocalDate toDate,
+                                                           @RequestParam(required = false) String description,
                                                            Pageable pageable) {
-        if (userId != null) return ResponseEntity.ok().body(service.findByUser(userId, pageable));
-//        if (creditCardId != null) return ResponseEntity.ok().body(service.findByCreditCard(creditCardId, pageable));
+        TransactionFilter filter = new TransactionFilter(dueDate, billingMonth, creditCardBillId, userId, fromDate, toDate, description);
+
+        return ResponseEntity.ok().body(service.searchTransaction(filter, pageable));
+
+//        if (userId != null) return ResponseEntity.ok().body(service.findByUser(userId, pageable));
+//        if (creditCardBillId != null) return ResponseEntity.ok().body(service.findByCreditCardBill(creditCardBillId, pageable));
 //        if (billingMonth != null) return ResponseEntity.ok().body(service.findByBilllingMonth(billingMonth, pageable));
 //        if (dueDate != null) return ResponseEntity.ok().body(service.findByDueDate(dueDate, pageable));
-        return ResponseEntity.ok().body(service.findAllPaged(pageable));
+//        if (fromDate != null && toDate != null) return ResponseEntity.ok().body(service.findByDueDateBetween(dueDate, pageable));
+//        return ResponseEntity.ok().body(service.findAllPaged(pageable));
     }
 
 

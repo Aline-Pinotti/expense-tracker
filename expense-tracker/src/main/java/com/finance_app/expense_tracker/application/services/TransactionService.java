@@ -1,6 +1,7 @@
 package com.finance_app.expense_tracker.application.services;
 
 import com.finance_app.expense_tracker.application.dtos.TransactionDTO;
+import com.finance_app.expense_tracker.application.filters.TransactionFilter;
 import com.finance_app.expense_tracker.application.services.exceptions.DatabaseException;
 import com.finance_app.expense_tracker.application.services.exceptions.ResourceNotFoundException;
 import com.finance_app.expense_tracker.core.entities.Transaction;
@@ -9,15 +10,19 @@ import com.finance_app.expense_tracker.core.repositories.AccountRepository;
 import com.finance_app.expense_tracker.core.repositories.CreditCardBillRepository;
 import com.finance_app.expense_tracker.core.repositories.TransactionRepository;
 import com.finance_app.expense_tracker.core.repositories.UserRepository;
+import com.finance_app.expense_tracker.core.specs.TransactionSpecification;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.UUID;
 
 @Service
@@ -46,10 +51,16 @@ public class TransactionService {
     }
 
     @Transactional(readOnly = true)
-    public Page<TransactionDTO> findByUser(UUID userId, Pageable pageable) { // TransactionUserDTO
-        return repository.findByUserId(userId, pageable).map(TransactionDTO::new);
+    public Page<TransactionDTO> searchTransaction(TransactionFilter filter, Pageable pageable) {
+        Specification<Transaction> spec = TransactionSpecification.from(filter);
+        return repository.findAll(spec, pageable).map(TransactionDTO::new);
     }
-    // TODO: findByDescription
+
+//    @Transactional(readOnly = true)
+//    public Page<TransactionDTO> findByUser(UUID userId, Pageable pageable) { // TransactionUserDTO
+//        return repository.findByUserId(userId, pageable).map(TransactionDTO::new);
+//    }
+
 //    @Transactional(readOnly = true)
 //    public Page<TransactionDTO> findByBilllingMonth(YearMonth billingMonth, Pageable pageable) {
 //        return repository.findByDueDateBetween(billingMonth.atDay(1), billingMonth.atEndOfMonth(), pageable).map(TransactionDTO::new);
